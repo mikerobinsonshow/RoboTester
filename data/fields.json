@@ -1,0 +1,26 @@
+[
+  {
+    "name": "first_name",
+    "label": "First Name",
+    "type": "text",
+    "validation": {"required": true, "minLength": 2}
+  },
+  {
+    "name": "email",
+    "label": "Email",
+    "type": "email",
+    "validation": {"required": true}
+  },
+  {
+    "name": "age",
+    "label": "Age",
+    "type": "number",
+    "validation": {"min": 0, "max": 120}
+  },
+  {
+    "name": "subscribe",
+    "label": "Subscribe to newsletter",
+    "type": "checkbox",
+    "validation": {"required": false}
+  }
+]
