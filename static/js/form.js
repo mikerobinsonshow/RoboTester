@@ -35,5 +35,13 @@ function renderForm(fields) {
     wrapper.appendChild(label);
     wrapper.appendChild(input);
     form.appendChild(wrapper);
+
+    if (typeof attachValidation === 'function') {
+      attachValidation(input, field.validation || {});
+    }
   });
+  const submit = document.createElement('button');
+  submit.type = 'submit';
+  submit.textContent = 'Submit';
+  form.appendChild(submit);
 }
