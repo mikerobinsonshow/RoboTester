@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Submission</title>
+</head>
+<body>
+{% for field in fields %}
+  <p><strong>{{ field.get('label', field['name']) }}:</strong> {{ data.get(field['name'], '') }}</p>
+{% endfor %}
+</body>
+</html>

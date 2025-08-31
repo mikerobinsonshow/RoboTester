@@ -1,14 +1,28 @@
 import json
+import os
 import random
 import re
-from io import BytesIO
-from flask import Flask, jsonify, render_template, request, send_file
-from reportlab.pdfgen import canvas
+import uuid
+from datetime import datetime
+
+from flask import (
+    Flask,
+    jsonify,
+    render_template,
+    request,
+    send_from_directory,
+    url_for,
+)
+
+import pdfkit
 
 app = Flask(__name__)
 
-with open('data/fields.json') as f:
+with open("data/fields.json") as f:
     ALL_FIELDS = json.load(f)
+
+PDF_DIR = "pdf"
+os.makedirs(PDF_DIR, exist_ok=True)
 
 
 @app.route('/schema')
@@ -88,34 +102,33 @@ def validate_data(data):
 
 
 def generate_pdf(data):
-    buffer = BytesIO()
-    pdf = canvas.Canvas(buffer)
-    y = 800
-    for field in ALL_FIELDS:
-        name = field["name"]
-        label = field.get("label", name)
-        value = data.get(name, "")
-        pdf.drawString(72, y, f"{label}: {value}")
-        y -= 20
-    pdf.save()
-    buffer.seek(0)
-    return buffer
+    html = render_template("pdf_template.html", data=data, fields=ALL_FIELDS)
+    filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex}.pdf"
+    path = os.path.join(PDF_DIR, filename)
+    pdfkit.from_string(html, path)
+    return path, filename
 
 
-@app.route('/submit', methods=['POST'])
+@app.route("/submit", methods=["POST"])
 def submit():
     data = request.get_json() or {}
     errors = validate_data(data)
     if errors:
         return jsonify({"errors": errors}), 400
 
-    pdf_buffer = generate_pdf(data)
-    return send_file(
-        pdf_buffer,
-        as_attachment=True,
-        download_name="submission.pdf",
-        mimetype="application/pdf",
+    path, filename = generate_pdf(data)
+    return jsonify(
+        {
+            "message": "PDF generated",
+            "pdf_path": path,
+            "pdf_url": url_for("get_pdf", filename=filename),
+        }
     )
+
+
+@app.route("/pdf/<path:filename>")
+def get_pdf(filename):
+    return send_from_directory(PDF_DIR, filename)
 
 
 if __name__ == '__main__':
