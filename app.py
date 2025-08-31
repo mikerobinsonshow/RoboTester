@@ -109,7 +109,7 @@ def generate_pdf(data):
     path = os.path.join(PDF_DIR, filename)
     try:
         pdfkit.from_string(html, path)
-    except (OSError, pdfkit.PDFKitError) as e:
+    except OSError as e:
         app.logger.error("PDF generation failed: %s", e)
         return {"error": f"PDF generation failed: {e}"}
     return path, filename
