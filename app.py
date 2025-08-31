@@ -21,7 +21,7 @@ app = Flask(__name__)
 with open("data/fields.json") as f:
     ALL_FIELDS = json.load(f)
 
-PDF_DIR = "pdf"
+PDF_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pdf")
 os.makedirs(PDF_DIR, exist_ok=True)
 
 
