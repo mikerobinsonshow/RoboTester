@@ -52,6 +52,7 @@ function renderForm(fields) {
   form.innerHTML = '';
   fields.forEach((field) => {
     const wrapper = document.createElement('div');
+    wrapper.classList.add('nice-form-group');
 
     const label = document.createElement('label');
     label.textContent = field.label;
@@ -61,12 +62,18 @@ function renderForm(fields) {
     if (field.type === 'checkbox') {
       input = document.createElement('input');
       input.type = 'checkbox';
+      input.name = field.name;
+      input.id = field.name;
+      wrapper.appendChild(input);
+      wrapper.appendChild(label);
     } else {
       input = document.createElement('input');
       input.type = field.type || 'text';
+      input.name = field.name;
+      input.id = field.name;
+      wrapper.appendChild(label);
+      wrapper.appendChild(input);
     }
-    input.name = field.name;
-    input.id = field.name;
 
     if (field.validation) {
       if (field.validation.required) input.required = true;
@@ -75,8 +82,6 @@ function renderForm(fields) {
       if (field.validation.max !== undefined) input.max = field.validation.max;
     }
 
-    wrapper.appendChild(label);
-    wrapper.appendChild(input);
     form.appendChild(wrapper);
 
     if (typeof attachValidation === 'function') {
