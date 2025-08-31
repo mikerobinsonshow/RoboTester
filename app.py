@@ -27,10 +27,7 @@ os.makedirs(PDF_DIR, exist_ok=True)
 
 @app.route('/schema')
 def schema():
-    fields = ALL_FIELDS[:]
-    random.shuffle(fields)
-    count = random.randint(1, len(fields))
-    return jsonify(fields[:count])
+    return jsonify(ALL_FIELDS)
 
 
 @app.route('/')
@@ -49,6 +46,22 @@ def is_valid_phone(value):
 
 def is_valid_ssn(value):
     return bool(re.fullmatch(r"\d{3}-\d{2}-\d{4}", value))
+
+
+def is_valid_date(value):
+    try:
+        datetime.strptime(value, "%Y-%m-%d")
+        return True
+    except ValueError:
+        return False
+
+
+def is_valid_zip(value):
+    return bool(re.fullmatch(r"\d{5}", value))
+
+
+def is_valid_state(value):
+    return bool(re.fullmatch(r"[A-Za-z]{2}", value))
 
 
 def validate_data(data):
@@ -80,6 +93,15 @@ def validate_data(data):
 
             if "ssn" in lname and not is_valid_ssn(value):
                 field_errors.append("SSN must match ###-##-####")
+
+            if ("dob" in lname or "date" in lname) and not is_valid_date(value):
+                field_errors.append("Date must be YYYY-MM-DD")
+
+            if "zip" in lname and not is_valid_zip(value):
+                field_errors.append("ZIP Code must be 5 digits")
+
+            if "state" in lname and not is_valid_state(value):
+                field_errors.append("State must be two letters")
 
             min_len = rules.get("minLength")
             if min_len and len(value) < min_len:
@@ -116,7 +138,10 @@ def generate_pdf(data):
             app.logger.error("PDF generation failed: %s", e)
             return {"error": f"PDF generation failed: {e}"}
     try:
-        pdfkit.from_string(html, path)
+        if config:
+            pdfkit.from_string(html, path, configuration=config)
+        else:
+            pdfkit.from_string(html, path)
     except OSError as e:
         app.logger.error("PDF generation failed: %s", e)
         return {"error": f"PDF generation failed: {e}"}

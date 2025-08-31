@@ -6,6 +6,18 @@
     "validation": {"required": true, "minLength": 2}
   },
   {
+    "name": "last_name",
+    "label": "Last Name",
+    "type": "text",
+    "validation": {"required": true, "minLength": 2}
+  },
+  {
+    "name": "middle_name",
+    "label": "Middle Name",
+    "type": "text",
+    "validation": {"required": false}
+  },
+  {
     "name": "email",
     "label": "Email",
     "type": "email",
@@ -22,5 +34,83 @@
     "label": "Subscribe to newsletter",
     "type": "checkbox",
     "validation": {"required": false}
+  },
+  {
+    "name": "ssn",
+    "label": "SSN",
+    "type": "text",
+    "validation": {"required": true}
+  },
+  {
+    "name": "date_of_birth",
+    "label": "Date of Birth",
+    "type": "date",
+    "validation": {"required": true}
+  },
+  {
+    "name": "address",
+    "label": "Address",
+    "type": "text",
+    "validation": {"required": true}
+  },
+  {
+    "name": "city",
+    "label": "City",
+    "type": "text",
+    "validation": {"required": true}
+  },
+  {
+    "name": "state",
+    "label": "State",
+    "type": "text",
+    "validation": {"required": true}
+  },
+  {
+    "name": "zip_code",
+    "label": "ZIP Code",
+    "type": "text",
+    "validation": {"required": true}
+  },
+  {
+    "name": "phone_number",
+    "label": "Phone Number",
+    "type": "text",
+    "validation": {"required": true}
+  },
+  {
+    "name": "attorney_name",
+    "label": "Attorney Name",
+    "type": "text",
+    "validation": {"required": true}
+  },
+  {
+    "name": "case_number",
+    "label": "Case Number",
+    "type": "text",
+    "validation": {"required": true}
+  },
+  {
+    "name": "employer_name",
+    "label": "Employer Name",
+    "type": "text",
+    "validation": {"required": true}
+  },
+  {
+    "name": "gender",
+    "label": "Gender",
+    "type": "text",
+    "validation": {"required": true}
+  },
+  {
+    "name": "marital_status",
+    "label": "Marital Status",
+    "type": "text",
+    "validation": {"required": true}
+  },
+  {
+    "name": "country",
+    "label": "Country",
+    "type": "text",
+    "validation": {"required": true}
   }
 ]
