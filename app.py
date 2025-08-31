@@ -21,7 +21,7 @@ app = Flask(__name__)
 with open("data/fields.json") as f:
     ALL_FIELDS = json.load(f)
 
-PDF_DIR = "pdf"
+PDF_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pdf")
 os.makedirs(PDF_DIR, exist_ok=True)
 
 
@@ -53,39 +53,41 @@ def is_valid_ssn(value):
 
 def validate_data(data):
     errors = {}
-    for field in ALL_FIELDS:
-        name = field["name"]
-        rules = field.get("validation", {})
-        value = data.get(name)
+    field_map = {field["name"]: field for field in ALL_FIELDS}
+    for name, raw_value in data.items():
+        field = field_map.get(name)
+        if not field:
+            continue
 
-        if isinstance(value, str):
-            value_stripped = value.strip()
+        rules = field.get("validation", {})
+        if isinstance(raw_value, str):
+            value = raw_value.strip()
         else:
-            value_stripped = value
+            value = raw_value
 
         field_errors = []
 
-        if rules.get("required") and (value_stripped is None or value_stripped == ""):
+        if rules.get("required") and (value is None or value == ""):
             field_errors.append(f"{name} is required")
 
-        if isinstance(value_stripped, str) and value_stripped:
-            if not within_length(value_stripped):
+        if isinstance(value, str) and value:
+            if not within_length(value):
                 field_errors.append(f"{name} must be at most 15 characters")
 
             lname = name.lower()
-            if "phone" in lname and not is_valid_phone(value_stripped):
+            if "phone" in lname and not is_valid_phone(value):
                 field_errors.append("Phone number must be 10 digits")
 
-            if "ssn" in lname and not is_valid_ssn(value_stripped):
+            if "ssn" in lname and not is_valid_ssn(value):
                 field_errors.append("SSN must match ###-##-####")
 
             min_len = rules.get("minLength")
-            if min_len and len(value_stripped) < min_len:
+            if min_len and len(value) < min_len:
                 field_errors.append(f"{name} must be at least {min_len} characters")
 
-        if value_stripped not in (None, ""):
+        if value not in (None, ""):
             try:
-                numeric_val = float(value_stripped)
+                numeric_val = float(value)
             except (TypeError, ValueError):
                 numeric_val = None
 
@@ -105,9 +107,17 @@ def generate_pdf(data):
     html = render_template("pdf_template.html", data=data, fields=ALL_FIELDS)
     filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex}.pdf"
     path = os.path.join(PDF_DIR, filename)
+    config = None
+    wkhtml_path = os.environ.get("WKHTMLTOPDF_CMD")
+    if wkhtml_path:
+        try:
+            config = pdfkit.configuration(wkhtmltopdf=wkhtml_path)
+        except OSError as e:
+            app.logger.error("PDF generation failed: %s", e)
+            return {"error": f"PDF generation failed: {e}"}
     try:
-        pdfkit.from_string(html, path)
-    except (OSError, pdfkit.PDFKitError) as e:
+        pdfkit.from_string(html, path, configuration=config)
+    except OSError as e:
         app.logger.error("PDF generation failed: %s", e)
         return {"error": f"PDF generation failed: {e}"}
     return path, filename
