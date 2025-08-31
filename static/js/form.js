@@ -35,5 +35,9 @@ function renderForm(fields) {
     wrapper.appendChild(label);
     wrapper.appendChild(input);
     form.appendChild(wrapper);
+
+    if (typeof attachValidation === 'function') {
+      attachValidation(input, field.validation || {});
+    }
   });
 }
