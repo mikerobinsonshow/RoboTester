@@ -2,7 +2,8 @@ import app
 
 
 def test_generate_pdf_returns_error_on_failure(monkeypatch):
-    def fake_from_string(html, path, **kwargs):
+
+    def fake_from_string(html, path):
         raise OSError("wkhtmltopdf missing")
     monkeypatch.setattr(app.pdfkit, "from_string", fake_from_string)
     with app.app.test_request_context():
@@ -28,3 +29,4 @@ def test_generate_pdf_uses_manual_wkhtmltopdf_path(monkeypatch):
         result = app.generate_pdf({})
     assert called["path"] == "custom-path"
     assert isinstance(result, tuple)
+

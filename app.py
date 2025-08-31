@@ -116,7 +116,7 @@ def generate_pdf(data):
             app.logger.error("PDF generation failed: %s", e)
             return {"error": f"PDF generation failed: {e}"}
     try:
-        pdfkit.from_string(html, path, configuration=config)
+        pdfkit.from_string(html, path)
     except OSError as e:
         app.logger.error("PDF generation failed: %s", e)
         return {"error": f"PDF generation failed: {e}"}
