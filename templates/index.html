@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Dynamic Form</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <script src="{{ url_for('static', filename='js/validation.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/form.js') }}" defer></script>
 </head>
@@ -10,5 +11,6 @@
   <h1>Dynamic Form</h1>
   <form id="dynamic-form"></form>
   <div id="error-messages" style="color: red;"></div>
+  <div id="result"></div>
 </body>
 </html>
