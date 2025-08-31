@@ -40,4 +40,8 @@ function renderForm(fields) {
       attachValidation(input, field.validation || {});
     }
   });
+  const submit = document.createElement('button');
+  submit.type = 'submit';
+  submit.textContent = 'Submit';
+  form.appendChild(submit);
 }
