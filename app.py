@@ -107,6 +107,14 @@ def generate_pdf(data):
     html = render_template("pdf_template.html", data=data, fields=ALL_FIELDS)
     filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex}.pdf"
     path = os.path.join(PDF_DIR, filename)
+    config = None
+    wkhtml_path = os.environ.get("WKHTMLTOPDF_CMD")
+    if wkhtml_path:
+        try:
+            config = pdfkit.configuration(wkhtmltopdf=wkhtml_path)
+        except OSError as e:
+            app.logger.error("PDF generation failed: %s", e)
+            return {"error": f"PDF generation failed: {e}"}
     try:
         pdfkit.from_string(html, path)
     except OSError as e:
