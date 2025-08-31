@@ -16,11 +16,20 @@ h1 {
 }
 
 form {
-  width: 320px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
+  max-width: 640px;
+  margin: 0 auto;
 }
 
-form div {
-  margin-bottom: 1rem;
+.nice-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.nice-form-group label {
+  margin-bottom: 0.25rem;
 }
 
 form input {
@@ -33,6 +42,7 @@ form input {
 }
 
 form button {
+  grid-column: span 2;
   padding: 0.5rem 1rem;
   background-color: #007bff;
   color: #fff;
