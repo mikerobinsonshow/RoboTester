@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('dynamic-form');
   form.addEventListener('submit', handleSubmit);
+  const newFormBtn = document.getElementById('new-form');
+  if (newFormBtn) {
+    newFormBtn.addEventListener('click', () => window.location.reload());
+  }
   fetch('/schema')
     .then((res) => res.json())
     .then((fields) => renderForm(fields));
@@ -50,7 +54,13 @@ function handleSubmit(event) {
 function renderForm(fields) {
   const form = document.getElementById('dynamic-form');
   form.innerHTML = '';
-  fields.forEach((field) => {
+  const midpoint = Math.ceil(fields.length / 2);
+  const page1 = document.createElement('div');
+  page1.classList.add('form-page');
+  const page2 = document.createElement('div');
+  page2.classList.add('form-page', 'hidden');
+
+  fields.forEach((field, index) => {
     const wrapper = document.createElement('div');
     wrapper.classList.add('nice-form-group');
 
@@ -82,14 +92,30 @@ function renderForm(fields) {
       if (field.validation.max !== undefined) input.max = field.validation.max;
     }
 
-    form.appendChild(wrapper);
+    const targetPage = index < midpoint ? page1 : page2;
+    targetPage.appendChild(wrapper);
 
     if (typeof attachValidation === 'function') {
       attachValidation(input, field.validation || {});
     }
   });
+
+  const next = document.createElement('button');
+  next.type = 'button';
+  next.textContent = 'Next';
+  next.classList.add('button');
+  next.addEventListener('click', () => {
+    page1.classList.add('hidden');
+    page2.classList.remove('hidden');
+  });
+  page1.appendChild(next);
+
   const submit = document.createElement('button');
   submit.type = 'submit';
   submit.textContent = 'Submit';
-  form.appendChild(submit);
+  submit.classList.add('button');
+  page2.appendChild(submit);
+
+  form.appendChild(page1);
+  form.appendChild(page2);
 }
