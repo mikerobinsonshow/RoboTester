@@ -48,7 +48,7 @@ form button {
   color: #fff;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: pointer; accent-color: ;
 }
 
 form .button {
