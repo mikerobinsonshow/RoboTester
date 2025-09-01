@@ -27,7 +27,9 @@ os.makedirs(PDF_DIR, exist_ok=True)
 
 @app.route('/schema')
 def schema():
-    return jsonify(ALL_FIELDS)
+    fields = list(ALL_FIELDS)
+    random.shuffle(fields)
+    return jsonify(fields)
 
 
 @app.route('/')
