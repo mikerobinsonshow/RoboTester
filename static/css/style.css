@@ -41,9 +41,9 @@ form input {
   box-sizing: border-box;
 }
 
+.button {
 form button {
   grid-column: span 2;
-
   padding: 0.5rem 1rem;
   color: #fff;
   border: none;
@@ -69,3 +69,13 @@ form .button:hover {
 #new-form.button:hover {
   background-color: #218838;
 }
+
+.form-page {
+  display: contents;
+}
+
+.hidden {
+  display: none;
+}
+=======
+
