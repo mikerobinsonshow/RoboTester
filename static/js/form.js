@@ -118,4 +118,5 @@ function renderForm(fields) {
 
   form.appendChild(page1);
   form.appendChild(page2);
+  form.appendChild(submit);
 }
