@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('dynamic-form');
   form.addEventListener('submit', handleSubmit);
+  const newFormBtn = document.getElementById('new-form');
+  if (newFormBtn) {
+    newFormBtn.addEventListener('click', () => window.location.reload());
+  }
   fetch('/schema')
     .then((res) => res.json())
     .then((fields) => renderForm(fields));
@@ -91,5 +95,6 @@ function renderForm(fields) {
   const submit = document.createElement('button');
   submit.type = 'submit';
   submit.textContent = 'Submit';
+  submit.classList.add('button');
   form.appendChild(submit);
 }

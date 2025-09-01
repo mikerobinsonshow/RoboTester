@@ -16,11 +16,20 @@ h1 {
 }
 
 form {
-  width: 320px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
+  max-width: 640px;
+  margin: 0 auto;
 }
 
-form div {
-  margin-bottom: 1rem;
+.nice-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.nice-form-group label {
+  margin-bottom: 0.25rem;
 }
 
 form input {
@@ -32,15 +41,29 @@ form input {
   box-sizing: border-box;
 }
 
-form button {
+.button {
   padding: 0.5rem 1rem;
-  background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-form button:hover {
+form .button {
+  grid-column: span 2;
+  background-color: #007bff;
+}
+
+form .button:hover {
   background-color: #0056b3;
+}
+
+#new-form.button {
+  background-color: #28a745;
+  display: block;
+  margin: 1rem auto 0;
+}
+
+#new-form.button:hover {
+  background-color: #218838;
 }

@@ -3,20 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>Dynamic Form</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-forms.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <script src="{{ url_for('static', filename='js/validation.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/form.js') }}" defer></script>
 </head>
 <body>
-  <h1>Dynamic Form</h1>
-  <form id="dynamic-form"></form>
-  <div id="error-messages" style="color: red;"></div>
-  <div id="result"></div>
-
   <div class="demo-page">
     <main class="demo-page-content">
       <section>
         <h1>Dynamic Form</h1>
         <form id="dynamic-form"></form>
+        <button id="new-form" class="button" type="button">New Form</button>
         <div id="error-messages" style="color: red;"></div>
         <div id="result"></div>
       </section>
