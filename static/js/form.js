@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('dynamic-form');
   form.addEventListener('submit', handleSubmit);
+  const newFormBtn = document.getElementById('new-form');
+  if (newFormBtn) {
+    newFormBtn.addEventListener('click', () => window.location.reload());
+  }
   fetch('/schema')
     .then((res) => res.json())
     .then((fields) => renderForm(fields));
