@@ -95,5 +95,6 @@ function renderForm(fields) {
   const submit = document.createElement('button');
   submit.type = 'submit';
   submit.textContent = 'Submit';
+  submit.classList.add('button');
   form.appendChild(submit);
 }
