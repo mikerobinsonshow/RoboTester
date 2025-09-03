@@ -48,7 +48,7 @@ form button {
   color: #fff;
   border: none;
   border-radius: 4px;
-  cursor: pointer; accent-color: ;
+  cursor: pointer; accent-color: red ;
 }
 
 form .button {
@@ -76,6 +76,5 @@ form .button:hover {
 
 .hidden {
   display: none;
-}
-=======
+}}
 
